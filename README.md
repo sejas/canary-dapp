@@ -4,6 +4,12 @@ Basic DApp to show how to interact with smart contracts using Metamask Wallet.
 
 <https://canary-dapp.vercel.app/>
 
+- Backend Repo: <https://github.com/sejas/canary-dapp-smartcontract>
+
+## Slides
+
+<https://slides.com/d/EDGlZks/live>
+
 ## Run the project
 
 ```bash
