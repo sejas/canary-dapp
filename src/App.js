@@ -44,7 +44,7 @@ export default function App() {
       return;
     }
 
-    const addTweetListener = async (_address, tweetId) => {
+    const tweetListener = async (_address, tweetId) => {
       const tweet = await contract.getTweet(tweetId);
       setTweets(tweets => {
         if (!tweets.find((t) => tweetId.eq(t.id))) {
@@ -54,9 +54,9 @@ export default function App() {
         return tweets;
       });
     };
-    contract.on('AddTweet', addTweetListener);
+    contract.on('AddTweet', tweetListener);
 
-    const addLikeListener = async (_address, tweetId) => {
+    const likeListener = async (_address, tweetId) => {
       const tweet = await contract.getTweet(tweetId);
       setTweets(tweets => {
         const indexArray = tweets.findIndex((t) => tweetId.eq(t.id));
@@ -68,9 +68,9 @@ export default function App() {
         }
       });
     };
-    contract.on('LikedTweet', addLikeListener);
+    contract.on('LikedTweet', likeListener);
 
-    const addDeleteListener = async (tweetId) => {
+    const deleteListener = async (tweetId) => {
       setTweets(tweets => {
         const indexArray = tweets.findIndex((t) => tweetId.eq(t.id));
         console.log('DeleteTweet', indexArray, tweetId);
@@ -81,12 +81,12 @@ export default function App() {
         }
       });
     };
-    contract.on('DeleteTweet', addDeleteListener);
+    contract.on('DeleteTweet', deleteListener);
 
     return () => {
-      contract.off('AddTweet', addTweetListener);
-      contract.off('LikedTweet', addLikeListener);
-      contract.off('DeleteTweet', addDeleteListener);
+      contract.off('AddTweet', tweetListener);
+      contract.off('LikedTweet', likeListener);
+      contract.off('DeleteTweet', deleteListener);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contract]);
@@ -115,12 +115,15 @@ export default function App() {
         return;
       }
 
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-      console.log('Connected', accounts[0]);
-      setCurrentAccount(accounts[0]);
-      setChainId(ethereum.chainId);
+      // TODO 2: Uncomment the following three lines to retreive the accounts
+      // const accounts = await ethereum.request({
+      //   method: 'eth_requestAccounts',
+      // });
+      // TODO 3: set the currentAccount to accounts[0]
+      
+      // TODO 4: uncomment and set the chainId to the current chainId. Check ethereum.chainId
+      // const chainId = await ethereum.request({ method: 'eth_chainId' });
+
     } catch (error) {
       console.log(error);
     }
@@ -153,25 +156,13 @@ export default function App() {
   }
 
   async function like(tweetId) {
-    try {
-      const tx = await contract.likeTweet(tweetId);
-      console.log('Mining...', tx.hash);
-      await tx.wait();
-      console.log('Mined -- ', tx.hash);
-    } catch (error) {
-      console.error(error);
-    }
+    // TODO 5: implement this function
+    console.log('TODO: liking', tweetId);
   }
 
   async function deleteTweet(tweetId) {
-    try {
-      const tx = await contract.deleteTweet(tweetId, true);
-      console.log('Mining...', tx.hash);
-      await tx.wait();
-      console.log('Mined -- ', tx.hash);
-    } catch (error) {
-      console.error(error);
-    }
+    // TODO 6: implement this function
+    console.log('TODO: deleting', tweetId);
   }
 
   return (
@@ -181,6 +172,7 @@ export default function App() {
         <div>
 
           <TweetsContainer>
+            {/* Text Input */}
             <TextField
               inputProps={{ ref: tweetBoxRef }}
               label="Your tweet"
@@ -191,8 +183,10 @@ export default function App() {
             <Button onClick={tweet} variant="contained" sx={{ alignSelf: 'flex-end' }}>
               Send Tweet
             </Button>
+            {/* Info */}
             <Typography>{`Tweets: ${tweets.length}`}</Typography>
             <Divider />
+            {/* Tweets */}
             {isTweeting && <Tweet
               tweet={{...LOADING_TWEET, tweetText: tweetBoxRef.current.value}}
               currentAccount={''}

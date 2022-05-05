@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import ContractJson from '../utils/Canary.json';
 
 const CanaryDetails = {
+  // TODO 1: Replace the address with the address of the deployed contract
   CONTRACT_ADDRESS: '0xd44aBFB64B98C13a69839BFF433814446726703A',
+  // If you have changed the contract code, you will need to update the ABI file
   CONTRACT_ABI: ContractJson.abi,
 };  
 
